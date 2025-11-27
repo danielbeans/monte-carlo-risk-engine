@@ -2,7 +2,13 @@
 
 import uvicorn
 
-from risk_engine.main import app
+from risk_engine import config
+
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000, reload=False)
+    uvicorn.run(
+        "risk_engine.main:app",
+        host=config.settings.api_host,
+        port=config.settings.api_port,
+        reload=config.settings.api_reload,
+    )
