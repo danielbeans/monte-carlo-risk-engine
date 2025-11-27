@@ -4,12 +4,13 @@ FastAPI backend application initialization.
 
 from __future__ import annotations
 
-from contextlib import asynccontextmanager
+import contextlib
 from typing import AsyncGenerator
 
 import fastapi
+from fastapi.middleware import cors
 
-from app.api.routes import api_router
+from risk_engine.api import routes
 
 
 def create_app() -> fastapi.FastAPI:
@@ -28,7 +29,7 @@ def create_app() -> fastapi.FastAPI:
 
 # Actions before and after the application begins accepting requests.
 # See: https://fastapi.tiangolo.com/advanced/events/?h=#lifespan
-@asynccontextmanager
+@contextlib.asynccontextmanager
 async def lifespan(_: fastapi.FastAPI) -> AsyncGenerator[None, None]:
     # Setup
 
@@ -42,7 +43,7 @@ def add_middleware(app: fastapi.FastAPI) -> None:
     # TODO: Tighten this up
     origins = ["*"]
     app.add_middleware(
-        fastapi.middleware.cors.CORSMiddleware,
+        cors.CORSMiddleware,
         allow_origins=origins,
         allow_credentials=True,
         allow_methods=["*"],
@@ -55,7 +56,7 @@ def add_routers(app: fastapi.FastAPI) -> None:
     health_router.get("/health")(lambda: {"status": "healthy"})
     app.include_router(health_router)
 
-    app.include_router(api_router, prefix="/api/v1")
+    app.include_router(routes.api_router, prefix="/api/v1")
 
 
 app = create_app()

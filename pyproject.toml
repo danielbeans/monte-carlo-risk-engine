@@ -1,5 +1,5 @@
 [project]
-name = "monte-carlo-risk-engine"
+name = "risk-engine"
 version = "0.1.0"
 description = "Monte Carlo Risk Engine - Event-driven portfolio risk analysis"
 readme = "README.md"
