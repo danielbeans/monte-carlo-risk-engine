@@ -56,7 +56,7 @@ def add_routers(app: fastapi.FastAPI) -> None:
     health_router.get("/health")(lambda: {"status": "healthy"})
     app.include_router(health_router)
 
-    app.include_router(routes.api_router, prefix="/api/v1")
+    app.include_router(routes.api_router)
 
 
 app = create_app()

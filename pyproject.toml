@@ -12,6 +12,7 @@ dependencies = [
     "redis>=5.0.0",
     "asyncpg>=0.29.0",
     "python-dotenv>=1.0.0",
+    "rq>=2.6.1",
 ]
 
 [build-system]

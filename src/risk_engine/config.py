@@ -1,5 +1,4 @@
 import os
-from typing import Optional
 
 import dotenv
 import pydantic_settings
@@ -12,6 +11,24 @@ class Settings(pydantic_settings.BaseSettings):
     api_host: str = os.getenv("API_HOST", "0.0.0.0")
     api_port: int = os.getenv("API_PORT", 8000)
     api_reload: bool = os.getenv("API_RELOAD", False)
+
+    # Redis Settings
+    redis_host: str = os.getenv("REDIS_HOST", "localhost")
+    redis_port: int = os.getenv("REDIS_PORT", 6379)
+    redis_db: int = os.getenv("REDIS_DB", 0)
+    redis_password: str | None = os.getenv("REDIS_PASSWORD", None)
+
+    # PostgreSQL Settings
+    postgres_host: str = os.getenv("POSTGRES_HOST", "localhost")
+    postgres_port: int = os.getenv("POSTGRES_PORT", 5432)
+    postgres_user: str = os.getenv("POSTGRES_USER", "postgres")
+    postgres_password: str = os.getenv("POSTGRES_PASSWORD", "postgres")
+    postgres_db: str = os.getenv("POSTGRES_DB", "risk_engine")
+
+    # Application Settings
+    task_queue_key: str = os.getenv("TASK_QUEUE_KEY", "risk_analysis:queue")
+    result_cache_prefix: str = os.getenv("RESULT_CACHE_PREFIX", "risk_analysis:result:")
+    cache_ttl_seconds: int = os.getenv("CACHE_TTL_SECONDS", 600)  # 10 minutes
 
     model_config = pydantic_settings.SettingsConfigDict(
         env_file=".env",
