@@ -1,0 +1,10 @@
+---
+services:
+  api:
+    environment:
+      API_RELOAD: "true"
+    volumes:
+      - ./src:/app/src
+    build:
+      context: .
+      dockerfile: Dockerfile
