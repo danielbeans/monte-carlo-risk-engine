@@ -4,8 +4,9 @@ import rq
 from mcengine.config import settings
 
 if __name__ == "__main__":
-    queue_names = settings.queue_names
+    queue_names = [settings.default_queue, settings.commission_queue]
     print(f"Starting worker listening to queues: {queue_names}")
+
 
     worker = rq.Worker(
         queues=queue_names,

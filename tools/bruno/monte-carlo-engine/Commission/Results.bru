@@ -1,16 +1,15 @@
 meta {
-  name: Health Check
+  name: Results
   type: http
   seq: 2
 }
 
 get {
-  url: {{base_url}}/health
+  url: {{commission_url}}/results
   body: none
   auth: inherit
 }
 
 settings {
   encodeUrl: true
-  timeout: 0
 }

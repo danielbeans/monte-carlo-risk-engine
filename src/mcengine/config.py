@@ -28,16 +28,8 @@ class Settings(pydantic_settings.BaseSettings):
     # Redis RQ Settings
     result_cache_prefix: str = os.getenv("RESULT_CACHE_PREFIX", "mcengine:result:")
     cache_ttl_seconds: int = os.getenv("CACHE_TTL_SECONDS", 600)  # 10 minutes
-    _queue_names_str: str = os.getenv("QUEUE_NAMES", "default:queue")
-
-    @property
-    def queue_names(self) -> list[str]:
-        queues = [q.strip() for q in self._queue_names_str.split(",") if q.strip()]
-        return queues if queues else ["default:queue"]
-
-    @property
-    def default_queue(self) -> str:
-        return self.queue_names[0]
+    default_queue: str = os.getenv("DEFAULT_QUEUE", "default:queue")
+    commission_queue: str = os.getenv("COMMISSION_QUEUE", "commission:queue")
 
     model_config = pydantic_settings.SettingsConfigDict(
         env_file=".env",

@@ -1,0 +1,22 @@
+meta {
+  name: Simulate
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{commission_url}}/simulate
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "test_field": "str"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -51,7 +51,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_DB: ${POSTGRES_DB:-mcengine}
       # Redis RQ Settings
-      QUEUE_NAMES: ${QUEUE_NAMES:-default:queue}
+      COMMISSION_QUEUE: ${COMMISSION_QUEUE:-commission:queue}
       RESULT_CACHE_PREFIX: ${RESULT_CACHE_PREFIX:-mcengine:result:}
       CACHE_TTL_SECONDS: ${CACHE_TTL_SECONDS:-600}
     ports:
@@ -93,7 +93,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_DB: ${POSTGRES_DB:-mcengine}
       # Redis RQ Settings
-      QUEUE_NAMES: ${QUEUE_NAMES:-default:queue}
+      COMMISSION_QUEUE: ${COMMISSION_QUEUE:-commission:queue}
       RESULT_CACHE_PREFIX: ${RESULT_CACHE_PREFIX:-mcengine:result:}
       CACHE_TTL_SECONDS: ${CACHE_TTL_SECONDS:-600}
     depends_on:

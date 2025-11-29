@@ -10,7 +10,7 @@ from typing import AsyncGenerator
 import fastapi
 from fastapi.middleware import cors
 
-from mcengine.api import routes
+from mcengine import routes
 
 
 def create_app() -> fastapi.FastAPI:

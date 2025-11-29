@@ -7,6 +7,6 @@ import fastapi
 from mcengine.db import redis_rq
 
 
-RedisServiceDep = Annotated[
+RedisRQServiceDep = Annotated[
     redis_rq.RedisRQService, fastapi.Depends(redis_rq.get_redis_rq_service)
 ]
