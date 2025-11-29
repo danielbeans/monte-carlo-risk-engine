@@ -69,12 +69,15 @@ services:
           "-f",
           "http://${API_HOST:-0.0.0.0}:${API_PORT:-8000}/health",
         ]
-      interval: 1m
-      timeout: 5s
+      interval: 5s
+      timeout: 3s
       retries: 3
 
   worker:
     image: monte-carlo-engine-worker:${IMAGE_TAG:-latest}
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: monte-carlo-engine-worker
     command: ["uv", "run", "-m", "worker"]
     environment:

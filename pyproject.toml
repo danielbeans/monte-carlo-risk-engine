@@ -1,5 +1,5 @@
 [project]
-name = "monte-carlo-engine"
+name = "mcengine"
 version = "0.1.0"
 description = "Monte Carlo Engine"
 readme = "README.md"

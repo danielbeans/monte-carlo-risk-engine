@@ -6,16 +6,16 @@ build:
 	docker compose build --no-cache
 
 build-dev:
-	docker compose -f docker-compose.yml -f docker-compose.dev.yml build --no-cache
-
-up:
-	docker compose up -d
+	IMAGE_TAG=dev docker compose -f docker-compose.yml -f docker-compose.dev.yml build --no-cache
 
 dev:
-	docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+	IMAGE_TAG=dev docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 
 prod:
 	docker compose -f docker-compose.yml up -d
+
+up:
+	docker compose up -d
 
 down:
 	docker compose -f docker-compose.yml -f docker-compose.dev.yml down
