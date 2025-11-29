@@ -2,11 +2,11 @@
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: risk-engine-postgres
+    container_name: monte-carlo-engine-postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DB: ${POSTGRES_DB:-risk_engine}
+      POSTGRES_DB: ${POSTGRES_DB:-mcengine}
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     volumes:
@@ -19,7 +19,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: risk-engine-redis
+    container_name: monte-carlo-engine-redis
     ports:
       - "${REDIS_PORT:-6379}:6379"
     healthcheck:
@@ -29,11 +29,11 @@ services:
       retries: 5
 
   api:
-    image: risk-engine-api:${IMAGE_TAG:-latest}
+    image: monte-carlo-engine-api:${IMAGE_TAG:-latest}
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: risk-engine-api
+    container_name: monte-carlo-engine-api
     environment:
       # API Settings
       API_HOST: ${API_HOST:-0.0.0.0}
@@ -49,7 +49,7 @@ services:
       POSTGRES_PORT: ${POSTGRES_PORT:-5432}
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DB: ${POSTGRES_DB:-risk_engine}
+      POSTGRES_DB: ${POSTGRES_DB:-mcengine}
       # Redis RQ Settings
       TASK_QUEUE_KEY: ${TASK_QUEUE_KEY:-risk_analysis:queue}
       RESULT_CACHE_PREFIX: ${RESULT_CACHE_PREFIX:-risk_analysis:result:}
@@ -74,8 +74,8 @@ services:
       retries: 3
 
   worker:
-    image: risk-engine-worker:${IMAGE_TAG:-latest}
-    container_name: risk-engine-worker
+    image: monte-carlo-engine-worker:${IMAGE_TAG:-latest}
+    container_name: monte-carlo-engine-worker
     command: ["uv", "run", "-m", "worker"]
     environment:
       # Redis Settings
@@ -88,7 +88,7 @@ services:
       POSTGRES_PORT: ${POSTGRES_PORT:-5432}
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DB: ${POSTGRES_DB:-risk_engine}
+      POSTGRES_DB: ${POSTGRES_DB:-mcengine}
       # Redis RQ Settings
       TASK_QUEUE_KEY: ${TASK_QUEUE_KEY:-risk_analysis:queue}
       RESULT_CACHE_PREFIX: ${RESULT_CACHE_PREFIX:-risk_analysis:result:}

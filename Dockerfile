@@ -25,5 +25,5 @@ COPY pyproject.toml uv.lock README.md ./
 
 EXPOSE 8000
 
-CMD ["uv", "run", "-m", "risk_engine"]
+CMD ["uv", "run", "-m", "mcengine"]
 

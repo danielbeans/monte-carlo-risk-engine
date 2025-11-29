@@ -1,7 +1,7 @@
 [project]
-name = "risk-engine"
+name = "monte-carlo-engine"
 version = "0.1.0"
-description = "Monte Carlo Risk Engine - Event-driven portfolio risk analysis"
+description = "Monte Carlo Engine"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [

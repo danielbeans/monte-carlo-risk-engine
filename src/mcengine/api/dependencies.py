@@ -4,7 +4,7 @@ from typing import Annotated
 
 import fastapi
 
-from risk_engine.db import redis_rq
+from mcengine.db import redis_rq
 
 
 RedisServiceDep = Annotated[

@@ -23,7 +23,7 @@ class Settings(pydantic_settings.BaseSettings):
     postgres_port: int = os.getenv("POSTGRES_PORT", 5432)
     postgres_user: str = os.getenv("POSTGRES_USER", "postgres")
     postgres_password: str = os.getenv("POSTGRES_PASSWORD", "postgres")
-    postgres_db: str = os.getenv("POSTGRES_DB", "risk_engine")
+    postgres_db: str = os.getenv("POSTGRES_DB", "mcengine")
 
     # Redis RQ Settings
     task_queue_key: str = os.getenv("TASK_QUEUE_KEY", "risk_analysis:queue")

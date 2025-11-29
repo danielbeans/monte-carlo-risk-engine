@@ -10,13 +10,13 @@ from typing import AsyncGenerator
 import fastapi
 from fastapi.middleware import cors
 
-from risk_engine.api import routes
+from mcengine.api import routes
 
 
 def create_app() -> fastapi.FastAPI:
     app = fastapi.FastAPI(
-        title="Monte Carlo Risk Engine",
-        description="Event-driven portfolio risk analysis API",
+        title="Monte Carlo Engine",
+        description="Monte Carlo Engine",
         version="0.1.0",
         lifespan=lifespan,
     )

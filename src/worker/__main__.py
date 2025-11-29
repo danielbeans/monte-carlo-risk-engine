@@ -1,7 +1,7 @@
 import redis
 import rq
 
-from risk_engine.config import settings
+from mcengine.config import settings
 
 if __name__ == "__main__":
     worker = rq.Worker(

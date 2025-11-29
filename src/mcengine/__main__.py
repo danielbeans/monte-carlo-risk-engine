@@ -2,12 +2,12 @@
 
 import uvicorn
 
-from risk_engine import config
+from mcengine import config
 
 
 if __name__ == "__main__":
     uvicorn.run(
-        "risk_engine.main:app",
+        "mcengine.main:app",
         host=config.settings.api_host,
         port=config.settings.api_port,
         reload=config.settings.api_reload,

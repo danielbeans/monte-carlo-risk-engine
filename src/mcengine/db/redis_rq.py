@@ -3,7 +3,7 @@ from typing import Any, Callable
 import redis
 import rq
 
-from risk_engine.config import settings
+from mcengine.config import settings
 
 
 class RedisRQService:
