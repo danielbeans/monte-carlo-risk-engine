@@ -5,7 +5,6 @@ import redis
 from typing import Any
 
 from mcengine import config
-from mcengine import schemas
 from mcengine import services
 from mcengine.db import redis_rq
 

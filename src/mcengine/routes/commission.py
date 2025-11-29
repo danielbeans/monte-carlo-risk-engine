@@ -15,18 +15,18 @@ router = fastapi.APIRouter(prefix="/commission")
 @router.post(
     "/simulate",
     status_code=fastapi.status.HTTP_201_CREATED,
-    response_model=dict[str, str],
+    response_model=schemas.commission.CommissionSimulationResponse,
 )
 async def enqueue_commission_simulation(
-    request: dict[str, Any],
+    request: schemas.commission.CommissionSimulationRequest,
     redis_rq_service: dependencies.RedisRQServiceDep,
-) -> dict[str, str]:
+) -> schemas.commission.CommissionSimulationResponse:
     job_id = str(uuid.uuid4())
 
     job = redis_rq_service.enqueue_task(
         tasks.commission.process_commission_simulation,
         job_id,
-        request=request,
+        request=request.model_dump(),
         queue_name=config.settings.commission_queue,
     )
 

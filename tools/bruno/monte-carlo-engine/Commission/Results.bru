@@ -5,11 +5,16 @@ meta {
 }
 
 get {
-  url: {{commission_url}}/results
+  url: {{commission_url}}/results/:job_id
   body: none
   auth: inherit
 }
 
+params:path {
+  job_id: f5869cc5-90ae-40c0-ac1a-6e6baca16592
+}
+
 settings {
   encodeUrl: true
+  timeout: 0
 }
