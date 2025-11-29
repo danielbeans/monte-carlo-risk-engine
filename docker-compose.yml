@@ -1,0 +1,71 @@
+---
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: risk-engine-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-risk_engine}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: risk-engine-redis
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  api:
+    image: risk-engine-api:${IMAGE_TAG:-latest}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: risk-engine-api
+    environment:
+      # API Settings
+      API_HOST: ${API_HOST:-0.0.0.0}
+      API_PORT: 8000
+      API_RELOAD: ${API_RELOAD:-false}
+      # Redis Settings
+      REDIS_HOST: ${REDIS_HOST:-redis}
+      REDIS_PORT: ${REDIS_PORT:-6379}
+      REDIS_DB: ${REDIS_DB:-0}
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      # PostgreSQL Settings
+      POSTGRES_HOST: ${POSTGRES_HOST:-postgres}
+      POSTGRES_PORT: ${POSTGRES_PORT:-5432}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-risk_engine}
+      # Redis RQ Settings
+      TASK_QUEUE_KEY: ${TASK_QUEUE_KEY:-risk_analysis:queue}
+      RESULT_CACHE_PREFIX: ${RESULT_CACHE_PREFIX:-risk_analysis:result:}
+      CACHE_TTL_SECONDS: ${CACHE_TTL_SECONDS:-600}
+    ports:
+      - "${API_PORT:-8000}:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${API_PORT:-8000}/health"]
+      interval: 1m
+      timeout: 5s
+      retries: 3
+
+volumes:
+  postgres_data:

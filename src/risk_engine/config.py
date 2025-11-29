@@ -25,7 +25,7 @@ class Settings(pydantic_settings.BaseSettings):
     postgres_password: str = os.getenv("POSTGRES_PASSWORD", "postgres")
     postgres_db: str = os.getenv("POSTGRES_DB", "risk_engine")
 
-    # Application Settings
+    # Redis RQ Settings
     task_queue_key: str = os.getenv("TASK_QUEUE_KEY", "risk_analysis:queue")
     result_cache_prefix: str = os.getenv("RESULT_CACHE_PREFIX", "risk_analysis:result:")
     cache_ttl_seconds: int = os.getenv("CACHE_TTL_SECONDS", 600)  # 10 minutes
