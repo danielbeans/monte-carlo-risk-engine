@@ -26,9 +26,18 @@ class Settings(pydantic_settings.BaseSettings):
     postgres_db: str = os.getenv("POSTGRES_DB", "mcengine")
 
     # Redis RQ Settings
-    task_queue_key: str = os.getenv("TASK_QUEUE_KEY", "risk_analysis:queue")
-    result_cache_prefix: str = os.getenv("RESULT_CACHE_PREFIX", "risk_analysis:result:")
+    result_cache_prefix: str = os.getenv("RESULT_CACHE_PREFIX", "mcengine:result:")
     cache_ttl_seconds: int = os.getenv("CACHE_TTL_SECONDS", 600)  # 10 minutes
+    _queue_names_str: str = os.getenv("QUEUE_NAMES", "default:queue")
+
+    @property
+    def queue_names(self) -> list[str]:
+        queues = [q.strip() for q in self._queue_names_str.split(",") if q.strip()]
+        return queues if queues else ["default:queue"]
+
+    @property
+    def default_queue(self) -> str:
+        return self.queue_names[0]
 
     model_config = pydantic_settings.SettingsConfigDict(
         env_file=".env",

@@ -1,6 +1,7 @@
 import fastapi
 
-from mcengine.api.routes import root
+from mcengine.api.routes import commission, root
 
 api_router = fastapi.APIRouter()
-api_router.include_router(root.router, prefix="/api/v1")
+api_router.include_router(root.router)
+api_router.include_router(commission.router)

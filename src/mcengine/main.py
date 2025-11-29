@@ -52,10 +52,6 @@ def add_middleware(app: fastapi.FastAPI) -> None:
 
 
 def add_routers(app: fastapi.FastAPI) -> None:
-    health_router = fastapi.APIRouter()
-    health_router.get("/health")(lambda: {"status": "healthy"})
-    app.include_router(health_router)
-
     app.include_router(routes.api_router)
 
 

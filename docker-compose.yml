@@ -51,8 +51,8 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_DB: ${POSTGRES_DB:-mcengine}
       # Redis RQ Settings
-      TASK_QUEUE_KEY: ${TASK_QUEUE_KEY:-risk_analysis:queue}
-      RESULT_CACHE_PREFIX: ${RESULT_CACHE_PREFIX:-risk_analysis:result:}
+      QUEUE_NAMES: ${QUEUE_NAMES:-default:queue}
+      RESULT_CACHE_PREFIX: ${RESULT_CACHE_PREFIX:-mcengine:result:}
       CACHE_TTL_SECONDS: ${CACHE_TTL_SECONDS:-600}
     ports:
       - "${API_PORT:-8000}:8000"
@@ -93,8 +93,8 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_DB: ${POSTGRES_DB:-mcengine}
       # Redis RQ Settings
-      TASK_QUEUE_KEY: ${TASK_QUEUE_KEY:-risk_analysis:queue}
-      RESULT_CACHE_PREFIX: ${RESULT_CACHE_PREFIX:-risk_analysis:result:}
+      QUEUE_NAMES: ${QUEUE_NAMES:-default:queue}
+      RESULT_CACHE_PREFIX: ${RESULT_CACHE_PREFIX:-mcengine:result:}
       CACHE_TTL_SECONDS: ${CACHE_TTL_SECONDS:-600}
     depends_on:
       redis:

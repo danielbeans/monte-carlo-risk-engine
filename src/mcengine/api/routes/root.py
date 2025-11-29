@@ -6,6 +6,11 @@ from mcengine.services.tasks import test_task
 router = fastapi.APIRouter()
 
 
+@router.get("/health")
+async def health() -> dict[str, str]:
+    return {"status": "healthy"}
+
+
 @router.get("/test", response_model=dict[str, str])
 async def test(redis_service: RedisServiceDep) -> dict[str, str]:
     job = redis_service.enqueue_task(test_task, "test")
