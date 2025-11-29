@@ -12,7 +12,7 @@ up:
 	docker compose up -d
 
 dev:
-	docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
+	docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 
 prod:
 	docker compose -f docker-compose.yml up -d

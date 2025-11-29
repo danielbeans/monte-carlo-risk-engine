@@ -62,10 +62,43 @@ services:
       redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:${API_PORT:-8000}/health"]
+      test:
+        [
+          "CMD",
+          "curl",
+          "-f",
+          "http://${API_HOST:-0.0.0.0}:${API_PORT:-8000}/health",
+        ]
       interval: 1m
       timeout: 5s
       retries: 3
 
+  worker:
+    image: risk-engine-worker:${IMAGE_TAG:-latest}
+    container_name: risk-engine-worker
+    command: ["uv", "run", "-m", "worker"]
+    environment:
+      # Redis Settings
+      REDIS_HOST: ${REDIS_HOST:-redis}
+      REDIS_PORT: ${REDIS_PORT:-6379}
+      REDIS_DB: ${REDIS_DB:-0}
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      # PostgreSQL Settings
+      POSTGRES_HOST: ${POSTGRES_HOST:-postgres}
+      POSTGRES_PORT: ${POSTGRES_PORT:-5432}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-risk_engine}
+      # Redis RQ Settings
+      TASK_QUEUE_KEY: ${TASK_QUEUE_KEY:-risk_analysis:queue}
+      RESULT_CACHE_PREFIX: ${RESULT_CACHE_PREFIX:-risk_analysis:result:}
+      CACHE_TTL_SECONDS: ${CACHE_TTL_SECONDS:-600}
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      api:
+        condition: service_healthy
 volumes:
   postgres_data:

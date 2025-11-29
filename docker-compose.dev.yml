@@ -5,6 +5,7 @@ services:
       API_RELOAD: "true"
     volumes:
       - ./src:/app/src
-    build:
-      context: .
-      dockerfile: Dockerfile
+
+  worker:
+    volumes:
+      - ./src:/app/src

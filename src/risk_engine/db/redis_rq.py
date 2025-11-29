@@ -20,7 +20,6 @@ class RedisRQService:
                 port=settings.redis_port,
                 db=settings.redis_db,
                 password=settings.redis_password,
-                decode_responses=True,
             )
         return self._redis_client
 
@@ -52,16 +51,20 @@ class RedisRQService:
         redis_client = self.get_redis_client()
         return rq.job.Job.fetch(job_id, connection=redis_client)
 
+    def get_all_jobs(self) -> list[rq.job.Job]:
+        queue = self.get_queue()
+        return queue.jobs
+
     def cache_result(self, task_id: str, result_json: str) -> None:
         redis_client = self.get_redis_client()
         key = f"{settings.result_cache_prefix}{task_id}"
+        redis_client.setex(key, settings.cache_ttl_seconds)
 
-        redis_client.setex(key, settings.cache_ttl_seconds, result_json)
-
-    def get_result(self, task_id: str) -> str | None:
+    def get_cached_result(self, task_id: str) -> str | None:
         redis_client = self.get_redis_client()
         key = f"{settings.result_cache_prefix}{task_id}"
-        return redis_client.get(key)
+        result = redis_client.get(key)
+        return result.decode("utf-8") if result else None
 
     def close(self) -> None:
         if self._redis_client is not None:
