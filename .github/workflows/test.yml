@@ -52,6 +52,15 @@ jobs:
       - name: Install dependencies
         run: uv sync --all-extras
 
+      - name: Initialize database schema
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: mcengine
+        run: uv run python -c "from mcengine.db.postgres import POSTGRES_SERVICE; POSTGRES_SERVICE.initialize_schema()"
+
       - name: Run pytest
         env:
           POSTGRES_HOST: localhost
