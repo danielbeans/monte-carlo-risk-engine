@@ -38,7 +38,9 @@ async def enqueue_commission_simulation(
     response_model=dict[str, Any],
 )
 async def get_commission_simulation_result(
-    job_id: str, redis_rq_service: dependencies.RedisRQServiceDep
+    job_id: str,
+    redis_rq_service: dependencies.RedisRQServiceDep,
+    postgres_service: dependencies.PostgresServiceDep,
 ) -> dict[str, Any]:
     # Try to get cached result first (this is the fastest path)
     cached_result = redis_rq_service.get_cached_result(job_id)
@@ -46,13 +48,22 @@ async def get_commission_simulation_result(
         print(f"Cached result found for job {job_id}")
         return json.loads(cached_result)
 
+    postgres_result = postgres_service.get_result(job_id)
+    if postgres_result:
+        print(f"Result found in PostgreSQL for job {job_id}, caching in Redis")
+        redis_rq_service.cache_result(job_id, json.dumps(postgres_result))
+        return postgres_result
+
+    # If not in PostgreSQL, check job status
     job = redis_rq_service.get_job(job_id)
 
     if job.is_finished:
         if job.result:
-            # Cache the result for future lookups
-            await redis_rq_service.cache_result(job_id, job.result)
-            return json.loads(job.result)
+            # ! Theoretically, this should never happen
+            result_dict = json.loads(job.result)
+            redis_rq_service.cache_result(job_id, job.result)
+            postgres_service.save_result(job_id, result_dict)
+            return result_dict
         else:
             raise fastapi.HTTPException(
                 status_code=fastapi.status.HTTP_404_NOT_FOUND,

@@ -11,6 +11,7 @@ import fastapi
 from fastapi.middleware import cors
 
 from mcengine import routes
+from mcengine.db import postgres
 
 
 def create_app() -> fastapi.FastAPI:
@@ -32,11 +33,13 @@ def create_app() -> fastapi.FastAPI:
 @contextlib.asynccontextmanager
 async def lifespan(_: fastapi.FastAPI) -> AsyncGenerator[None, None]:
     # Setup
+    postgres_service = postgres.POSTGRES_SERVICE
+    postgres_service.initialize_schema()
 
     yield
 
     # Teardown
-    pass
+    postgres_service.close()
 
 
 def add_middleware(app: fastapi.FastAPI) -> None:
