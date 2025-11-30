@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+
     services:
       postgres:
         image: postgres:16-alpine
@@ -24,7 +24,7 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
-      
+
       redis:
         image: redis:7-alpine
         options: >-
@@ -62,8 +62,7 @@ jobs:
           REDIS_HOST: localhost
           REDIS_PORT: 6379
           REDIS_DB: 0
-          COMMISSION_QUEUE: commission:queue
-          RESULT_CACHE_PREFIX: mcengine:result:
+          COMMISSION_QUEUE: "commission:queue"
+          RESULT_CACHE_PREFIX: "mcengine:result:"
           CACHE_TTL_SECONDS: 600
         run: uv run pytest
-
