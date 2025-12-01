@@ -55,7 +55,13 @@ async def get_commission_simulation_result(
         return postgres_result
 
     # If not in PostgreSQL, check job status
-    job = redis_rq_service.get_job(job_id)
+    try:
+        job = redis_rq_service.get_job(job_id)
+    except Exception as e:
+        raise fastapi.HTTPException(
+            status_code=fastapi.status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error getting job {job_id}: {e}",
+        )
 
     if job.is_finished:
         if job.result:
