@@ -37,12 +37,13 @@ class RedisRQService:
     def enqueue_task(
         self,
         func: Callable,
+        job_id: str,
         *args: Any,
         queue_name: str | None = None,
         **kwargs: Any,
     ) -> rq.job.Job:
         queue = self.get_queue(queue_name)
-        return queue.enqueue(func, *args, **kwargs)
+        return queue.enqueue(func, *args, job_id=job_id, **kwargs)
 
     def get_job_status(self, job_id: str) -> str | None:
         redis_client = self.get_redis_client()

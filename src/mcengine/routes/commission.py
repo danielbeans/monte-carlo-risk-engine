@@ -26,6 +26,7 @@ async def enqueue_commission_simulation(
     job = redis_rq_service.enqueue_task(
         tasks.commission.process_commission_simulation,
         job_id,
+        job_id,
         request=request.model_dump(),
         queue_name=config.settings.commission_queue,
     )
